@@ -14,4 +14,6 @@ Pod::Spec.new do |s|
 
   s.platform = :ios, "6.0", :osx, "10.8"
 
+  s.dependency 'Unirest', '~> 1.1.2'
+
 end
