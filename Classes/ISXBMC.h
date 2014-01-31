@@ -24,6 +24,7 @@
 
 @interface ISXBMC : NSObject
 
+@property (nonatomic) BOOL debug;
 
 + (id)xbmc:(NSString *)address;
 - (id)init:(NSString *)address;
@@ -32,5 +33,8 @@
 - (NSDictionary *)VideoLibrary_GetEpisodeDetails:(NSInteger)episodeid
                                       properties:(NSArray *)properties;
 - (NSDictionary *)Files_PrepareDownload:(NSString *)path;
+- (NSArray *)Player_GetActivePlayers;
+- (void)Player_PlayPause:(NSNumber *)playerid;
+- (void)Player_Stop:(NSNumber *)playerid;
 
 @end

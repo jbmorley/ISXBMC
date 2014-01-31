@@ -52,8 +52,8 @@
 }
 
 
-- (NSDictionary *)invokeMethod:(NSString *)method
-                    parameters:(id)parameters
+- (id)invokeMethod:(NSString *)method
+        parameters:(id)parameters
 {
   NSDictionary *params =
   @{@"jsonrpc": @"2.0",
@@ -63,13 +63,16 @@
   
   NSDictionary* headers = @{@"accept": @"application/json",
                             @"content-type": @"application/json"};
-  UNIHTTPJsonResponse* response = [[UNIRest get:^(UNISimpleRequest* request) {
+  UNIHTTPJsonResponse* response =
+  [[UNIRest get:^(UNISimpleRequest* request) {
     [request setUrl:self.address];
     [request setHeaders:headers];
     [request setParameters:@{@"request": [params json]}];
   }] asJson];
   NSDictionary *result = [response.body JSONObject];
-//  NSLog(@"Result: %@", result);
+  if (self.debug) {
+    NSLog(@"Result: %@", result);
+  }
   return result[@"result"];
 }
 
@@ -96,6 +99,27 @@
 {
   return [self invokeMethod:@"Files.PrepareDownload"
                  parameters:@[path]];
+}
+
+
+- (NSArray *)Player_GetActivePlayers
+{
+  return [self invokeMethod:@"Player.GetActivePlayers"
+                 parameters:@[]];
+}
+
+
+- (void)Player_PlayPause:(NSNumber *)playerid
+{
+  [self invokeMethod:@"Player.PlayPause"
+          parameters:@[playerid]];
+}
+
+
+- (void)Player_Stop:(NSNumber *)playerid
+{
+  [self invokeMethod:@"Player.Stop"
+          parameters:@[playerid]];
 }
 
 
