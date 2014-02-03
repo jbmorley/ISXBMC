@@ -27,6 +27,7 @@
 @interface ISXBMC ()
 
 @property (nonatomic, strong) NSString *address;
+@property (nonatomic, strong) NSString *jsonrpc;
 @property (nonatomic, strong) NSOperationQueue *queue;
 
 @end
@@ -46,6 +47,9 @@
   self = [super init];
   if (self) {
     self.address = address;
+    self.jsonrpc = [NSString stringWithFormat:
+                    @"http://%@/jsonrpc",
+                    self.address];
     self.queue = [NSOperationQueue new];
   }
   return self;
@@ -65,7 +69,7 @@
                             @"content-type": @"application/json"};
   UNIHTTPJsonResponse* response =
   [[UNIRest get:^(UNISimpleRequest* request) {
-    [request setUrl:self.address];
+    [request setUrl:self.jsonrpc];
     [request setHeaders:headers];
     [request setParameters:@{@"request": [params json]}];
   }] asJson];
@@ -74,6 +78,25 @@
     NSLog(@"Result: %@", result);
   }
   return result[@"result"];
+}
+
+
+- (NSArray *)VideoLibrary_GetTVShows
+{
+  NSDictionary *results =
+  [self invokeMethod:@"VideoLibrary.GetTVShows"
+          parameters:@[]];
+  return results[@"tvshows"];
+}
+
+
+- (NSDictionary *)VideoLibrary_GetTVShowDetails:(NSNumber *)tvshowid
+                                     properties:(NSArray *)properties
+{
+  NSDictionary *results =
+  [self invokeMethod:@"VideoLibrary.GetTVShowDetails"
+          parameters:@[tvshowid, properties]];
+  return results[@"tvshowdetails"];
 }
 
 
@@ -86,19 +109,31 @@
 }
 
 
-- (NSDictionary *)VideoLibrary_GetEpisodeDetails:(NSInteger)episodeid
+- (NSDictionary *)VideoLibrary_GetEpisodeDetails:(NSNumber *)episodeid
                                       properties:(NSArray *)properties
 {
   NSDictionary *results =
   [self invokeMethod:@"VideoLibrary.GetEpisodeDetails"
-          parameters:@[@(episodeid), properties]];
+          parameters:@[episodeid, properties]];
   return results[@"episodedetails"];
 }
 
-- (NSDictionary *)Files_PrepareDownload:(NSString *)path
+- (NSString *)Files_PrepareDownload:(NSString *)path
 {
-  return [self invokeMethod:@"Files.PrepareDownload"
-                 parameters:@[path]];
+  NSDictionary *download =
+  [self invokeMethod:@"Files.PrepareDownload"
+          parameters:@[path]];
+  
+  if (download == nil) {
+    return nil;
+  }
+  
+  return [NSString stringWithFormat:
+          @"%@://%@/%@",
+          download[@"protocol"],
+          self.address,
+          download[@"details"][@"path"]
+          ];
 }
 
 

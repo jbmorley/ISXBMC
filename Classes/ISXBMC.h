@@ -29,10 +29,13 @@
 + (id)xbmc:(NSString *)address;
 - (id)init:(NSString *)address;
 
+- (NSArray *)VideoLibrary_GetTVShows;
+- (NSDictionary *)VideoLibrary_GetTVShowDetails:(NSNumber *)tvshowid
+                                     properties:(NSArray *)properties;
 - (NSArray *)VideoLibrary_GetEpisodes;
-- (NSDictionary *)VideoLibrary_GetEpisodeDetails:(NSInteger)episodeid
+- (NSDictionary *)VideoLibrary_GetEpisodeDetails:(NSNumber *)episodeid
                                       properties:(NSArray *)properties;
-- (NSDictionary *)Files_PrepareDownload:(NSString *)path;
+- (NSString *)Files_PrepareDownload:(NSString *)path;
 - (NSArray *)Player_GetActivePlayers;
 - (void)Player_PlayPause:(NSNumber *)playerid;
 - (void)Player_Stop:(NSNumber *)playerid;
