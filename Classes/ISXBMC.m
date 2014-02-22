@@ -67,6 +67,9 @@
   
   NSDictionary* headers = @{@"accept": @"application/json",
                             @"content-type": @"application/json"};
+  if (self.debug) {
+    NSLog(@"%@", [params json]);
+  }
   UNIHTTPJsonResponse* response =
   [[UNIRest get:^(UNISimpleRequest* request) {
     [request setUrl:self.jsonrpc];
@@ -77,6 +80,12 @@
   if (self.debug) {
     NSLog(@"Result: %@", result);
   }
+  
+  NSDictionary *error = result[@"error"];
+  if (error) {
+    NSLog(@"%@", error);
+  }
+  
   return result[@"result"];
 }
 
@@ -104,7 +113,7 @@
 {
   NSDictionary *results =
   [self invokeMethod:@"VideoLibrary.GetEpisodes"
-          parameters:@[]];
+          parameters:@{@"properties": @[@"tvshowid", @"showtitle", @"title", @"file", @"episode", @"season"]}];
   return results[@"episodes"];
 }
 
