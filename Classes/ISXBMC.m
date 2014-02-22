@@ -68,13 +68,13 @@
   NSDictionary* headers = @{@"accept": @"application/json",
                             @"content-type": @"application/json"};
   if (self.debug) {
-    NSLog(@"%@", [params json]);
+    NSLog(@"%@", [params JSON]);
   }
   UNIHTTPJsonResponse* response =
   [[UNIRest get:^(UNISimpleRequest* request) {
     [request setUrl:self.jsonrpc];
     [request setHeaders:headers];
-    [request setParameters:@{@"request": [params json]}];
+    [request setParameters:@{@"request": [params JSON]}];
   }] asJson];
   NSDictionary *result = [response.body JSONObject];
   if (self.debug) {
