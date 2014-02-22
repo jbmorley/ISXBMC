@@ -113,7 +113,7 @@
 {
   NSDictionary *results =
   [self invokeMethod:@"VideoLibrary.GetEpisodes"
-          parameters:@{@"properties": @[@"tvshowid", @"showtitle", @"title", @"file", @"episode", @"season"]}];
+          parameters:@{@"properties": @[@"tvshowid", @"showtitle", @"title", @"file", @"episode", @"season", @"resume", @"playcount"]}];
   return results[@"episodes"];
 }
 
