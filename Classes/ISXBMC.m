@@ -127,6 +127,18 @@
   return results[@"episodedetails"];
 }
 
+- (BOOL)VideoLibrary_SetEpisodeDetails:(NSNumber *)episodeId
+                            properties:(NSDictionary *)properties
+{
+  NSMutableDictionary *parameters = [properties mutableCopy];
+  [parameters setValue:episodeId
+                forKey:@"episodeid"];
+  NSDictionary *results =
+  [self invokeMethod:@"VideoLibrary.SetEpisodeDetails"
+          parameters:parameters];
+  return [results isEqual:@"OK"];
+}
+
 - (NSString *)Files_PrepareDownload:(NSString *)path
 {
   NSDictionary *download =

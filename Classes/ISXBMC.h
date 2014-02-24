@@ -35,6 +35,8 @@
 - (NSArray *)VideoLibrary_GetEpisodes;
 - (NSDictionary *)VideoLibrary_GetEpisodeDetails:(NSNumber *)episodeid
                                       properties:(NSArray *)properties;
+- (BOOL)VideoLibrary_SetEpisodeDetails:(NSNumber *)episodeId
+                            properties:(NSDictionary *)properties;
 - (NSString *)Files_PrepareDownload:(NSString *)path;
 - (NSArray *)Player_GetActivePlayers;
 - (void)Player_PlayPause:(NSNumber *)playerid;
